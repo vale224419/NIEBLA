@@ -2,11 +2,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'montserrat', sans-serif;
 }
 
 body {
-  background: url('../IMG/niablablu.jpeg') no-repeat center center fixed;
+  background: url('../img/niablablu.jpeg') no-repeat center center fixed;
   background-size: cover;
   min-height: 100vh;
   display: flex;
@@ -21,7 +21,7 @@ body {
   position: fixed;
   top: 1.5rem;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translatex(-50%);
   display: flex;
   align-items: center;
   justify-content: space-between;

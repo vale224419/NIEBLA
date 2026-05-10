@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'montserrat', sans-serif;
 }
 
 body {
@@ -31,7 +31,7 @@ body {
   position: fixed;
   top: 1.5rem;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translatex(-50%);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -112,7 +112,7 @@ body {
   transform: scale(1.15);
 }
 
-#spotSection {
+#spotsection {
   width: 100%;
   max-width: 1100px;
   margin: 3rem auto;
@@ -214,7 +214,7 @@ body {
 
 .spot-info-wrapper button:hover {
   background: #005fcc;
-  transform: translateY(-2px);
+  transform: translatey(-2px);
 }
 
 .modal {
@@ -225,7 +225,7 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  animation: fadeIn 0.25s ease;
+  animation: fadein 0.25s ease;
 }
 
 .modal-content {
@@ -262,7 +262,7 @@ body {
 .nav-btn {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translatey(-50%);
   background: rgba(255, 255, 255, 0.2);
   border: none;
   font-size: 2rem;
@@ -280,7 +280,7 @@ body {
 .prev-btn { left: 20px; }
 .next-btn { right: 20px; }
 
-@keyframes fadeIn {
+@keyframes fadein {
   from { opacity: 0; }
   to { opacity: 1; }
 }
