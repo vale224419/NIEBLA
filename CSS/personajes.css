@@ -1,0 +1,68 @@
+:root {
+    --bg-color: #1a1a1a;
+    --paper-color: #d1cbc0;
+    --ink-color: #2a2a2a;
+    --danger-color: #8b0000;
+    /* Rojo sangre para sellos */
+}
+
+body {
+    background: var(--bg-color);
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.card {
+    width: 800px;
+    margin: 40px auto;
+    padding: 40px;
+    position: relative;
+    background-image: url("../IMG/papel.jpg");
+    /* Sombra pesada para que parezca un objeto sobre la mesa */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Efecto de "Censurado" o "Alto Secreto" */
+.card::after {
+    content: "CONFIDENCIAL";
+    position: absolute;
+    top: 280px;
+    right: 60px;
+    color: var(--danger-color);
+    font-weight: bold;
+    font-size: 50px;
+    border: 3px solid var(--danger-color);
+    padding: 5px;
+    transform: rotate(10deg);
+     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 4px double var(--ink-color);
+    margin-bottom: 20px;
+}
+
+.photo img {
+    width: 300px;
+    border: 4px solid var(--ink-color);
+    filter: grayscale(100%) contrast(1.2) brightness(0.9);
+     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.section-title {
+    background: var(--ink-color);
+    color: #fff;
+    padding: 5px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-top: 30px;
+}
+
+/* Elemento de "tacha" para información clasificada */
+.censored {
+    background: black;
+    color: black;
+    padding: 0 5px;
+}

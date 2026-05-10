@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comparte tu Spot</title>
+  <link rel="stylesheet" href="CSS/comparte_tu_spot.css" />
+</head>
+<body>
+
+  <header class="hero">
+    <div class="socials-outer">
+      <a href="https://www.instagram.com/" target="_blank">
+        <img src="IMG/instagram logo.png" alt="Instagram" class="icon">
+      </a>
+      <a href="https://www.tiktok.com/" target="_blank">
+        <img src="IMG/tiktok logo.png" alt="TikTok" class="icon">
+      </a>
+    </div>
+
+    <nav class="navbar">
+      <div class="nav-links">
+        <a href="TABOGO SPOT PREVIEW.html?map=open" class="logo">
+  <img src="IMG/Ubi.png" class="pin"> MUNDO NIEBLA
+</a>
+        <div class="divider"></div>
+        <a href="TABOGO SPOT PREVIEW.html#explora-spots">Explora el MUNDO NIEBLA</a>
+        <div class="divider"></div>
+        <a href="comparte_tu_spot.html">Comparte tus fotos con la comunidad</a>
+      </div>
+
+      <div class="search-container">
+        <input type="text" placeholder="ccc" />
+        <img src="IMG/search.png" class="search-icon" alt="Buscar">
+      </div>
+    </nav>
+
+    <a href="TABOGO SPOT PREVIEW.html" class="home-outer">
+      <img src="IMG/home.png" alt="Inicio" class="icon">
+    </a>
+  </header>
+
+  <div class="card">
+    <label class="image-upload">
+      <input type="file" accept="image/*" id="spotImage" multiple>
+      <div id="previewContainer" class="preview-container"></div>
+      <div class="add-icon">+</div>
+    </label>
+
+    <form id="spotForm" class="form">
+      <input type="text" id="spotName" placeholder="TITULA" required>
+      <textarea id="spotDesc" placeholder="Escribe una pequeña descripción" rows="3" required></textarea>
+      <input type="text" id="spotAddress" placeholder="Escribe la dirección" required>
+      <button type="submit" class="share-btn" id="shareBtn">☁️</button>
+    </form>
+  </div>
+
+<script>
+const form = document.getElementById("spotForm");
+const imageInput = document.getElementById("spotImage");
+const previewContainer = document.getElementById("previewContainer");
+
+// === Generar ID único ===
+const generateId = () => "_" + Math.random().toString(36).substr(2, 9);
+
+// === Función para comprimir imágenes ===
+function compressImage(file, maxWidth = 600, quality = 0.6) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const scale = Math.min(1, maxWidth / img.width);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const compressed = canvas.toDataURL("image/jpeg", quality);
+        resolve(compressed);
+      };
+      img.onerror = reject;
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// === Mostrar previsualizaciones ===
+imageInput.addEventListener("change", (e) => {
+  const files = e.target.files;
+  previewContainer.innerHTML = "";
+
+  if (files.length > 6) {
+    alert("Solo puedes subir hasta 6 imágenes para ahorrar espacio.");
+    imageInput.value = "";
+    return;
+  }
+
+  Array.from(files).forEach(file => {
+    if (file.size > 500 * 1024) { // 500 KB
+      alert(`La imagen "${file.name}" supera los 500 KB. Usa una versión más liviana.`);
+      imageInput.value = "";
+      previewContainer.innerHTML = "";
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = document.createElement("img");
+      img.src = event.target.result;
+      img.alt = "Vista previa";
+      img.style.width = "100px";
+      img.style.height = "100px";
+      img.style.objectFit = "cover";
+      img.style.borderRadius = "10px";
+      img.style.margin = "5px";
+      previewContainer.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
+});
+
+// === Guardar spot con compresión ===
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById("spotName").value.trim();
+  const desc = document.getElementById("spotDesc").value.trim();
+  const address = document.getElementById("spotAddress").value.trim();
+  const files = imageInput.files;
+
+  if (!name || !desc || !address) {
+    alert("Por favor completa todos los campos.");
+    return;
+  }
+  if (files.length === 0) {
+    alert("Por favor selecciona al menos una imagen.");
+    return;
+  }
+
+  const savedSpots = JSON.parse(localStorage.getItem("spots")) || [];
+
+  // Comprimir imágenes antes de guardar
+  const compressedImages = [];
+  for (const file of files) {
+    if (file.size > 500 * 1024) continue; // saltar si excede 500 KB
+    const imgCompressed = await compressImage(file, 600, 0.6);
+    compressedImages.push(imgCompressed);
+  }
+
+  const newSpot = {
+    id: generateId(),
+    name,
+    desc,
+    address,
+    images: compressedImages,
+    date: Date.now()
+  };
+
+  savedSpots.push(newSpot);
+  try {
+    localStorage.setItem("spots", JSON.stringify(savedSpots));
+    alert("📸 Spot agregado correctamente (imágenes comprimidas).");
+    window.location.href = "TABOGO SPOT PREVIEW.html";
+  } catch (err) {
+    alert("⚠️ No se pudo guardar: el almacenamiento está lleno. Borra algunos spots antiguos.");
+  }
+});
+</script>
+
+</body>
+</html>

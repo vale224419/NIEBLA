@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TABOGOSPOT</title>
+  <link rel="stylesheet" href="CSS/TABOGO CSSPREVIEW.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+<body>
+  <header class="hero">
+    <div class="socials-outer">
+      <a href="https://www.instagram.com/" target="_blank">
+        <img src="IMG/instagram logo.png" alt="Instagram" class="icon">
+      </a>
+      <a href="https://www.tiktok.com/" target="_blank">
+        <img src="IMG/tiktok logo.png" alt="TikTok" class="icon">
+      </a>
+    </div>
+
+    <nav class="navbar">
+      <div class="nav-links">
+        <a href="#" class="logo" id="toggleMapLogo">
+          <img src="IMG/Ubi.png" class="pin"> MUNDO NIEBLA
+        </a>
+        <div class="divider"></div>
+        <a href="#personajes">Expedientes</a>
+        <div class="divider"></div>
+        <a href="comparte_tu_spot.html">Comunidad NIEBLA</a>
+      </div>
+
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Explora el mundo NIEBLA" />
+        <img src="IMG/search.png" class="search-icon" alt="Buscar">
+      </div>
+    </nav>
+
+    <a href="#" class="home-outer">
+      <img src="IMG/home.png" alt="Inicio" class="icon">
+    </a>
+
+    <div class="mask-text">NIEBLA</div>
+  </header>
+
+
+<section>
+  <div id="personajes" class="box">
+    <a href="leo.html" class="slice"><span>LEO</span></a>
+    <a href="abril.html" class="slice"><span>ABRIL</span></a>
+    <a href="abrill.html" class="slice"><span>ABRILL</span></a>
+    <a href="paula.html" class="slice"><span>PAULA</span></a>
+  </div>
+</section>
+
+  <section id="explora-spots" class="spots-section"></section>
+
+  <section id="map-container">
+    <div id="map"></div>
+  </section>
+
+  <script>
+    const spotsContainer = document.getElementById("explora-spots");
+    const searchInput = document.getElementById("searchInput");
+    const mapContainer = document.getElementById("map");
+    const toggleMapLogo = document.getElementById("toggleMapLogo");
+
+    let mapInitialized = false;
+    let map;
+    let mapVisible = false;
+
+    // --- Alternar mapa al hacer clic en el logo ---
+    toggleMapLogo.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (!mapInitialized) {
+        initMap();
+        mapInitialized = true;
+      }
+      mapVisible = !mapVisible;
+      mapContainer.classList.toggle("visible", mapVisible);
+      toggleMapLogo.style.opacity = mapVisible ? "0.6" : "1";
+      toggleMapLogo.style.transition = "opacity 0.3s ease";
+      if (mapVisible) {
+        setTimeout(() => {
+          map.invalidateSize();
+          document.getElementById("map-container").scrollIntoView({ behavior: "smooth" });
+        }, 300);
+      }
+    });
+
+    // --- Inicializar mapa ---
+    function initMap() {
+      map = L.map("map").setView([4.6097, -74.0817], 12);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors"
+      }).addTo(map);
+      addMarkersFromStorage();
+    }
+
+    // --- Cargar marcadores guardados ---
+    async function addMarkersFromStorage() {
+      let spots = JSON.parse(localStorage.getItem("spots")) || [];
+      for (let spot of spots) {
+        if (!spot.lat || !spot.lng) {
+          try {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(spot.address)}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data[0]) {
+              spot.lat = parseFloat(data[0].lat);
+              spot.lng = parseFloat(data[0].lon);
+            }
+          } catch (err) {
+            console.warn("No se pudo geolocalizar:", spot.address);
+          }
+        }
+      }
+      const grouped = {};
+      for (let spot of spots) {
+        if (spot.lat && spot.lng) {
+          const key = `${spot.lat.toFixed(5)},${spot.lng.toFixed(5)}`;
+          if (!grouped[key]) grouped[key] = [];
+          grouped[key].push(spot);
+        }
+      }
+      for (const key in grouped) {
+        const [lat, lng] = key.split(",").map(Number);
+        const group = grouped[key];
+        let popupHTML = group.map(s => `
+        <div class="popup-spot" onclick="verSpot('${s.name}')">
+          <img src="${s.images[0]}" alt="${s.name}">
+          <div class="popup-spot-info">
+            <h3>${s.name}</h3>
+            <p>${s.desc}</p>
+            <p class="address">${s.address}</p>
+          </div>
+        </div>`).join("<hr>");
+        L.marker([lat, lng]).addTo(map).bindPopup(popupHTML);
+      }
+      localStorage.setItem("spots", JSON.stringify(spots));
+    }
+
+    // --- Ver un spot ---
+    function verSpot(spotName) {
+      const savedSpots = JSON.parse(localStorage.getItem("spots")) || [];
+      const selected = savedSpots.find(s => s.name === spotName);
+      if (selected) {
+        localStorage.setItem("selectedSpot", JSON.stringify(selected));
+        window.location.href = "explora-spots.html";
+      } else {
+        alert("No se encontró el spot 😢");
+      }
+    }
+
+    // --- Cargar spots en la vista ---
+    function loadSpots() {
+      const savedSpots = JSON.parse(localStorage.getItem("spots")) || [];
+      spotsContainer.innerHTML = "";
+      if (savedSpots.length === 0) {
+        spotsContainer.innerHTML = "<p style='text-align:center;'>No hay spots todavía 😢</p>";
+        return;
+      }
+      savedSpots.forEach((spot, index) => {
+        const card = document.createElement("div");
+        card.classList.add("spot-card");
+        card.innerHTML = `
+        <button class="delete-btn" title="Borrar">🗑️</button>
+        <img src="${spot.images[0]}" alt="${spot.name}">
+        <div class="spot-info">
+          <h3>${spot.name}</h3>
+          <p>${spot.desc}<br><strong>📍</strong> ${spot.address}</p>
+        </div>`;
+        card.addEventListener("click", (e) => {
+          if (!e.target.classList.contains("delete-btn")) {
+            localStorage.setItem("selectedSpot", JSON.stringify(spot));
+            window.location.href = "explora-spots.html";
+          }
+        });
+        card.querySelector(".delete-btn").addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (confirm(`¿Eliminar "${spot.name}"?`)) {
+            savedSpots.splice(index, 1);
+            localStorage.setItem("spots", JSON.stringify(savedSpots));
+            loadSpots();
+          }
+        });
+        spotsContainer.appendChild(card);
+      });
+    }
+
+    // --- Filtro de búsqueda ---
+    searchInput.addEventListener("input", (e) => {
+      const term = e.target.value.toLowerCase();
+      document.querySelectorAll(".spot-card").forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(term) ? "" : "none";
+      });
+    });
+
+    loadSpots();
+
+    // --- Mostrar automáticamente el mapa si viene con ?map=open ---
+    window.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("map") === "open") {
+        if (!mapInitialized) {
+          initMap();
+          mapInitialized = true;
+        }
+        mapVisible = true;
+        mapContainer.classList.add("visible");
+        toggleMapLogo.style.opacity = "0.6";
+        toggleMapLogo.style.transition = "opacity 0.3s ease";
+        setTimeout(() => {
+          map.invalidateSize();
+          document.getElementById("map-container").scrollIntoView({ behavior: "smooth" });
+        }, 500);
+      }
+    });
+  </script>
+</body>
+
+</html>
