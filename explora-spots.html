@@ -11,27 +11,27 @@
 <header class="hero">
   <div class="socials-outer">
     <a href="https://www.instagram.com/" target="_blank">
-      <img src="IMG/instagram logo.png" alt="Instagram" class="icon">
+      <img src="img/instagram logo.png" alt="Instagram" class="icon">
     </a>
     <a href="https://www.tiktok.com/" target="_blank">
-      <img src="IMG/tiktok logo.png" alt="TikTok" class="icon">
+      <img src="img/tiktok logo.png" alt="TikTok" class="icon">
     </a>
   </div>
 
   <nav class="navbar">
     <div class="nav-links">
-    <a href="TABOGO SPOT PREVIEW.html?map=open" class="logo">
-  <img src="IMG/Ubi.png" class="pin"> TABOGOSPOT
+    <a href="index.html?map=open" class="logo">
+  <img src="img/Ubi.png" class="pin"> TABOGOSPOT
 </a>
       <div class="divider"></div>
-      <a href="TABOGO SPOT PREVIEW.html#explora-spots">Explora<br>Spots</a>
+      <a href="index.html#explora-spots">Explora<br>Spots</a>
       <div class="divider"></div>
       <a href="comparte_tu_spot.html">Comparte tu spot<br>con la comunidad</a>
     </div>
   </nav>
 
-  <a href="TABOGO SPOT PREVIEW.html" class="home-outer">
-    <img src="IMG/home.png" alt="Inicio" class="icon">
+  <a href="index.html" class="home-outer">
+    <img src="img/home.png" alt="Inicio" class="icon">
   </a>
 </header>
 
@@ -95,7 +95,7 @@ window.addEventListener("DOMContentLoaded", () => {
     </div>`;
   document.body.appendChild(modal);
 
-  const modalImg = modal.querySelector(".modal-img");
+  const modalimg = modal.querySelector(".modal-img");
   const closeModal = modal.querySelector(".close-modal");
   const prevBtn = modal.querySelector(".prev-btn");
   const nextBtn = modal.querySelector(".next-btn");
@@ -103,14 +103,14 @@ window.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
   const openModal = (i) => {
     currentIndex = i;
-    modalImg.src = spot.images[i];
+    modalimg.src = spot.images[i];
     modal.style.display = "flex";
     document.body.style.overflow = "hidden";
   };
 
   const changeImage = (dir) => {
     currentIndex = (currentIndex + dir + spot.images.length) % spot.images.length;
-    modalImg.src = spot.images[currentIndex];
+    modalimg.src = spot.images[currentIndex];
   };
 
   document.querySelectorAll(".gallery-item img").forEach((img, i) => {
