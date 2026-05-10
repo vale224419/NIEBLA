@@ -6,7 +6,7 @@
 }
 
 body {
-  background: url('../IMG/tabogo.jpg') center/cover no-repeat fixed;
+  background: url('../img/tabogo.jpg') center/cover no-repeat fixed;
   color: #222;
   overflow-x: hidden;
   min-height: 100vh;

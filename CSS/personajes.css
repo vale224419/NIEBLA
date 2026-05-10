@@ -16,7 +16,7 @@ body {
     margin: 40px auto;
     padding: 40px;
     position: relative;
-    background-image: url("../IMG/papel.jpg");
+    background-image: url("../img/papel.jpg");
     /* Sombra pesada para que parezca un objeto sobre la mesa */
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
