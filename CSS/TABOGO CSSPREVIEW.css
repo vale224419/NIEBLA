@@ -18,7 +18,7 @@ body{background-color:var(--bg);color:var(--text);overflow-x:hidden;}
 .hero{
   position:relative;
   height:100vh;
-  background:url('../IMG/nieblalu.jpeg') center/cover no-repeat;
+  background:url('../img/nieblalu.jpeg') center/cover no-repeat;
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -309,9 +309,9 @@ body{background-color:var(--bg);color:var(--text);overflow-x:hidden;}
     justify-content: center;
 }
 
-/* JULIE */
+/* LEO */
 .slice:nth-child(1) { 
-    background-image: url('../img/leoo.jpeg'); 
+    background-image: url('img/leoo.jpeg'); 
     clip-path: polygon(0 0, 25% 0, 20% 100%, 0 100%);
     background-position: -16% 1%;
     background-size: auto 150%;
