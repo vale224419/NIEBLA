@@ -10,9 +10,9 @@
 body{background-color:var(--bg);color:var(--text);overflow-x:hidden;}
 @font-face{
   font-family:'Heading Now';
-  src:url('../fonts/HeadingNowTrial-37ExtraBold.ttf') format('truetype');
+  src:url('../fonts/HeadingNowTrial-37Extrabold.ttf') format('truetype');
   font-weight:800;
-  font-style:normal;
+  font-style:normal;  
   font-display:swap;
 }
 .hero{
