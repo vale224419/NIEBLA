@@ -26,26 +26,36 @@ body{background-color:var(--bg);color:var(--text);overflow-x:hidden;}
 }
 .mask-text{
   position:absolute;
+  bottom:-120px;
   left:50%;
-  bottom:-180px;
-
-  transform:translateX(-50%);
+  transform:translateX(-50%) scaleY(0.6);
 
   font-family:'Heading Now',sans-serif;
-  font-size:clamp(220px, 32vw, 700px);
+  font-size:clamp(180px, 32vw, 700px);
 
   font-weight:900;
   text-transform:uppercase;
   text-align:center;
 
-  color:rgba(255,255,255,0.35);
+  color:rgba(255,255,255,0.4);
 
   line-height:0.8;
-  letter-spacing:-0.03em;
+  letter-spacing:-0.02em;
 
   white-space:nowrap;
   pointer-events:none;
 }
+
+@media (max-width: 768px){
+
+  .mask-text{
+    bottom:-40px;
+    font-size:38vw;
+    transform:translateX(-50%) scaleY(0.7);
+  }
+
+}
+
 .navbar{
   position:fixed;
   top:1.5rem;
