@@ -460,7 +460,7 @@ body{background-color:var(--bg);color:var(--text);overflow-x:hidden;}
     height:100%;
 
     background-size:cover !important;
-    background-position:center !important;
+    background-position:center top !important;
 
     display:flex;
     justify-content:center;
