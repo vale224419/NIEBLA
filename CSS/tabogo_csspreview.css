@@ -371,3 +371,139 @@ body{background-color:var(--bg);color:var(--text);overflow-x:hidden;}
 #personajes {
   scroll-margin-top: 100px; /* ajusta este valor */
 }
+
+@media (max-width: 768px){
+
+  body{
+    overflow-x:hidden;
+  }
+
+  /* NAVBAR */
+
+  .navbar{
+    width:95%;
+    padding:0.8rem 1rem;
+    gap:1rem;
+    flex-direction:column;
+    border-radius:25px;
+    top:1rem;
+  }
+
+  .nav-links{
+    width:100%;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:0.8rem;
+  }
+
+  .nav-links a{
+    font-size:0.75rem;
+  }
+
+  .divider{
+    display:none;
+  }
+
+  .search-container{
+    width:100%;
+  }
+
+  .search-container input{
+    width:100%;
+    font-size:0.85rem;
+  }
+
+  /* ICONOS */
+
+  .socials-outer{
+    top:auto;
+    bottom:1rem;
+    left:1rem;
+    flex-direction:row;
+  }
+
+  .home-outer{
+    top:1rem;
+    right:1rem;
+  }
+
+  .icon{
+    width:30px;
+    height:30px;
+  }
+
+  /* HERO */
+
+  .hero{
+    height:85vh;
+    padding:1rem;
+  }
+
+  .mask-text{
+    font-size:38vw;
+    bottom:-20px;
+    transform:translateX(-50%) scaleY(0.7);
+    white-space:nowrap;
+  }
+
+  /* PERSONAJES */
+
+  .box{
+    height:auto;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .slice{
+    position:relative;
+    height:220px;
+    clip-path:none !important;
+    background-size:cover !important;
+    background-position:center !important;
+    transform:none !important;
+  }
+
+  .slice span{
+    margin:0 !important;
+    margin-bottom:20px !important;
+    font-size:1.5rem;
+  }
+
+  .box:hover .slice{
+    filter:none;
+  }
+
+  /* SPOTS */
+
+  .spots-section{
+    padding:2rem 1rem;
+    gap:1rem;
+  }
+
+  .spot-card{
+    width:100%;
+    padding:1rem;
+    border-radius:18px;
+  }
+
+  .spot-card img{
+    width:70px;
+    height:70px;
+  }
+
+  .spot-info h3{
+    font-size:0.95rem;
+  }
+
+  .spot-info p{
+    font-size:0.8rem;
+  }
+
+  /* MAPA */
+
+  #map{
+    height:300px;
+    border-radius:15px;
+  }
+
+}
