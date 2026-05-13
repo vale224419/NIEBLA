@@ -3,7 +3,7 @@
   --text:#222;
   --card-bg:#fff;
   --muted:#666;
-  --glass-bg:rgba(255,255,255,0.12);
+  --glass-bg:rgba(255,255,255,0.11);
   --glass-border:rgba(255,255,255,0.22);
 }
 
@@ -466,3 +466,4 @@ body{
 #personajes{
   scroll-margin-top:100px;
 }
+
